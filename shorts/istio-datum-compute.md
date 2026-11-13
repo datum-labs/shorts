@@ -2,6 +2,7 @@
 title: Four ways to join Datum Compute to Istio Service Meshes
 author: Daniel Lotterman
 date: Draft, Nov 2026
+reference file: https://github.com/datum-labs/shorts/blob/main/gists/k8s/istio-compute-bridge-reference.md
 ---
 
 ![Istio + Datum](assets/00-istio-plus-datum.svg)

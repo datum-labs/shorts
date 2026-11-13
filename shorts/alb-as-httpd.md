@@ -11,5 +11,3 @@ Start with the Datum guide, which covers the common cases:
 **[Use ALB as your HTTP proxy](https://www.datum.net/docs/guides/alb-as-httpd)**
 
 Then keep the [ALB as httpd reference](../gists/alb/alb-as-httpd-reference.md) open for the rest: a directive-by-directive mapping, load balancing and rollouts, timeouts, streaming, WebSockets and gRPC, access control and the WAF, how to verify the migration, troubleshooting, and the docs inconsistencies found while testing it.
-
-More ALB gists: [alb.md](../alb.md)
