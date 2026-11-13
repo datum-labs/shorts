@@ -97,8 +97,3 @@ path needs no header.*
 ## Reference Lab Architecture
 
 ![Reference lab architecture: the Datum gVPC with the Istio gateway, ALB, app1, app2 and app-client; the GKE cluster1 with its east-west gateway, istiod, helloworld v1, traffic pods, tunnel Envoy and Prometheus with Kiali; and the k3s cluster2 on a GCE VM with helloworld v2](assets/26-gke-lab-helloworld.png)
-
-Compute is free during Datum's beta. If you run a mesh and try this, tell us what broke:
-[get involved](https://www.datum.net/docs/get-involved).
-
-Claude did most of the building and testing in my terminal. I read every line before I believed it.
