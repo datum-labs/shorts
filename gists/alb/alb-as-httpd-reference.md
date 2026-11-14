@@ -11,7 +11,6 @@
 - APIs are preview (`networking.datumapis.com/v1alpha`, `gateway.envoyproxy.io/v1alpha1`); recheck before relying on edge cases
 - Test origins: `mendhak/http-https-echo` (echoes path, headers, Instance), `jmalloc/echo-server` (WebSocket, SSE)
 - Companion guide: [Use ALB as your HTTP proxy](https://www.datum.net/docs/guides/alb-as-httpd)
-- More ALB references and examples: [alb.md](../../alb.md)
 
 ## Before you begin
 
