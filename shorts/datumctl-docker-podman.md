@@ -136,13 +136,6 @@ spec:
   placements: …
 ```
 
-| | Compose / Docker | Datum |
-|---|---|---|
-| Create | `networks:` in `compose.yaml`, or `docker network create backend` | `datumctl apply -f network.yaml`, or `datumctl compute deploy api --network=backend` (offers to create it) |
-| Attach | `networks: [backend]` on the service | `networkInterfaces` on the Workload, chosen at create |
-| Addresses | IPv4 subnet from the engine | IPv6 `/48` from Datum, one `/96` per Instance |
-| Spans | One host | Every Compute location |
-
 [Networks, DNS and egress](../gists/compute/datumctl-compute-reference.md#11-networks-dns-and-egress) ·
 [IPv6 crash course](https://www.datum.net/blog/ipv6-crash-course)
 
