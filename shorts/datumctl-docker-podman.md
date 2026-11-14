@@ -132,7 +132,7 @@ spec:
       scaleSettings: {minReplicas: 1}
 ```
 
-`podman generate kube` output doesn't convert: a Pod isn't a Workload.
+Workload files will look familiar to consumers of Compose and Kubeconfig files.
 [Full manifest](../gists/compute/datumctl-compute-reference.md#12-manifests)
 
 ## Run datumctl itself in a container
