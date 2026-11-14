@@ -2,6 +2,7 @@
 title: "Technical reference: datumctl compute for Docker and Podman users"
 author: Daniel Lotterman
 date: Draft, Nov 2026
+short file: https://github.com/datum-labs/shorts/blob/main/shorts/datumctl-docker-podman.md
 ---
 
 # Technical reference: datumctl compute for Docker and Podman users
@@ -199,7 +200,7 @@ One Workload, one placement `default`, one Instance per location, one URL. Rollo
 | Image | Any linux/amd64 OCI image [D][V] | Packaged by `compute build` [D][V] |
 | arm64-only image | `ImageUnavailable`, "could not be pulled" [V] | n/a |
 | Kernel | Own, per Instance [D][V] | Own, per Instance [D] |
-| Startup | `Available` 4 s after create, two runs [V] | "A fraction of a second" [D]. Not measured here [?] |
+| Startup | `compute deploy` to ready: 4–6 s, 6.1–8.3 s wall [V] | `compute deploy` to ready: 4 s, 6.1–6.8 s wall [V]. Boot itself "a fraction of a second" [D], below what a deploy can resolve |
 | Capabilities | `CapEff 0x800005fb` [V]: CHOWN, DAC_OVERRIDE, FOWNER, FSETID, KILL, SETGID, SETUID, SETPCAP, NET_BIND_SERVICE, SETFCAP | None addable [D] |
 | no-new-privileges | On (`NoNewPrivs: 1`) [V]. `allowPrivilegeEscalation: true` turns it off [D] | |
 | User | Image's user; root stays root [V] | |
@@ -622,7 +623,7 @@ Also: bind `::`, use a registry host in the image reference, check `ss -ltn` for
 | `ImageUnavailable` / "could not be pulled", arm64-only image | No linux/amd64 variant [V] | Build or pull an amd64 image |
 | `could not be pulled using credentials from "registry-credentials"` on unikernel | Pushed without packaging (skopeo) [V] | `compute build --push`; `build inspect` |
 | `Filesystem: not found` | Same [V] | Same |
-| `could not be pulled anonymously`, unikernel, image `Compatible` on ttl.sh | Unknown [V][?] | §16.20 |
+| `could not be pulled anonymously`, unikernel, image `Compatible` on ttl.sh | Unknown; same digest pulls from public GHCR [V][?] | Use another registry, §16.20 |
 | `must include a registry` | No registry host [D] | `docker.io/library/…` |
 | `cannot move to "unikernel" … cannot be changed after it is created` | Immutable class [V] | Destroy and redeploy |
 | `workload name and --image are required` | Flag deploy without `--image` [V] | Add `--image` |
@@ -858,24 +859,32 @@ be pulled".
 [default-us-east-1-0/app] new generation 090aeb0f (replaced or redeployed)
 ```
 
-### 16.20 Unikernel vs general-purpose start
+### 16.20 Time to ready: Podman, general-purpose, unikernel
 
-`FROM docker.io/traefik/whoami:v1.10.3`, built with `compute build --analyze --push` against BuildKit 0.17.3, pushed to
-`ttl.sh` (anonymous). `build inspect`: `Compatible`, `kraftcloud/x86_64`, `Filesystem: packaged, 7.3 MiB`.
+Same app in all three: `traefik/whoami:v1.10.3`, unchanged for Podman and general-purpose; packaged with
+`compute build --analyze --push` (`FROM` that image, BuildKit 0.17.3) for unikernel. `build inspect`: `Compatible`,
+`kraftcloud/x86_64`, `Filesystem: packaged, 7.3 MiB`. Script: `podman run -d` until the first HTTP 200 (image cached);
+`compute deploy --location=us-east-1` until rollout complete, then `destroy`. All at `nice -n 19`. 2026-11-13.
 
-| Run | general-purpose (`traefik/whoami`) | unikernel (`ttl.sh/…@sha256:20e1af…`) |
-|---|---|---|
-| 1 | `Rollout complete in 4s` | `ImageUnavailable`, `could not be pulled anonymously` after 5 min |
-| 2 | `Rollout complete in 4s` | same |
+| Run | Podman 4.x, local | general-purpose: wall (platform) | unikernel: wall (platform) |
+|---|---|---|---|
+| 1 | 0.30 s | 6.66 s (4 s) | 6.75 s (4 s) |
+| 2 | 0.21 s | 6.13 s (4 s) | 6.13 s (4 s) |
+| 3 | 0.22 s | 8.25 s (6 s) | 6.06 s (4 s) |
 
-The unikernel pull failure from ttl.sh is unexplained.
+- Podman starts a process on a running kernel with a cached image. A deploy goes through the API, schedules a VM in a
+  location, boots it and pulls the image. The deploy path dominates both Datum classes; the unikernel boot advantage
+  doesn't show at this resolution (whole seconds).
+- Unikernel pulls: from `ttl.sh` (anonymous) the same digest failed with `could not be pulled anonymously` on two runs.
+  Copied registry-to-registry to a public `ghcr.io` package (`skopeo copy --all --preserve-digests`, digest unchanged,
+  still `Compatible`), it pulled and ran on all three runs.
 
 ## 17. Limits and open questions
 
 **Docs:** [Limitations and roadmap](https://www.datum.net/docs/compute/limitations-and-roadmap) · [Limits and quotas](https://www.datum.net/docs/compute/limits-and-quotas) · [gVPC limitations](https://www.datum.net/docs/galactic-vpc/limitations-and-roadmap)
 
-- Unikernel start time: not measured (§16.20). Needs a registry the class pulls from.
-- Unikernel anonymous pull from ttl.sh: fails with a `Compatible` image. Cause unknown.
+- Unikernel boot time on its own (below deploy resolution): not measured.
+- Unikernel anonymous pull from ttl.sh: fails with a `Compatible` image that pulls fine from public GHCR. Cause unknown.
 - Unikernel fork/exec and egress: undocumented, untested.
 - `--http2`, gRPC: untested.
 - `--max`, `--cpu-percent`: in the CLI, unsupported per the docs; not tested.
