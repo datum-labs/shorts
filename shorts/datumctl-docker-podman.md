@@ -105,6 +105,44 @@ $ datumctl compute build --analyze .
 
 *Names resolve inside a network, and networks stay isolated. Datum's networks span cities. IPv4-only services are reachable by name, through DNS64 and NAT64.*
 
+```yaml
+# compose.yaml
+services:
+  api:
+    image: docker.io/traefik/whoami
+    networks: [backend]
+
+networks:
+  backend: {}
+```
+
+```yaml
+# network.yaml + workload.yaml
+apiVersion: networking.datumapis.com/v1alpha
+kind: Network
+metadata: {name: backend}
+spec:
+  ipam: {mode: Auto}
+---
+apiVersion: compute.datumapis.com/v1alpha
+kind: Workload
+metadata: {name: api}
+spec:
+  template:
+    spec:
+      networkInterfaces:
+        - network: {name: backend}
+      runtime: …                     # as in "Same(-ish) YAML shape" below
+  placements: …
+```
+
+| | Compose / Docker | Datum |
+|---|---|---|
+| Create | `networks:` in `compose.yaml`, or `docker network create backend` | `datumctl apply -f network.yaml`, or `datumctl compute deploy api --network=backend` (offers to create it) |
+| Attach | `networks: [backend]` on the service | `networkInterfaces` on the Workload, chosen at create |
+| Addresses | IPv4 subnet from the engine | IPv6 `/48` from Datum, one `/96` per Instance |
+| Spans | One host | Every Compute location |
+
 [Networks, DNS and egress](../gists/compute/datumctl-compute-reference.md#11-networks-dns-and-egress) ·
 [IPv6 crash course](https://www.datum.net/blog/ipv6-crash-course)
 
