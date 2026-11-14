@@ -1,3 +1,10 @@
+---
+title: "Use ALB as your HTTP proxy: reference"
+author: Daniel Lotterman
+date: Draft, Oct 2026
+guide: https://www.datum.net/docs/guides/alb-as-httpd
+---
+
 # Use ALB as your HTTP proxy: reference
 
 <!-- OUTLINE. Companion page to the datum.net guide "Use ALB as your HTTP proxy" (guides/alb-as-httpd).

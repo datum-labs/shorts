@@ -2,6 +2,7 @@
 title: "Technical reference: bridging Istio meshes into gVPC with Datum ALB and Compute"
 author: Daniel Lotterman
 date: Draft, Nov 2026
+short file: https://github.com/datum-labs/shorts/blob/main/shorts/istio-datum-compute.md
 ---
 
 # Technical reference: bridging Istio meshes into gVPC with Datum ALB and Compute
