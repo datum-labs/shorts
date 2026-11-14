@@ -2,7 +2,7 @@
 title: You already know datumctl compute
 author: Daniel Lotterman
 date: Draft, Nov 2026
-reference file: https://github.com/datum-labs/shorts/blob/main/gists/compute/datumctl-compute-reference.md
+reference file: https://github.com/datum-labs/shorts/blob/main/gists/compute/datumctl-docker-podman-reference.md
 ---
 
 ![Docker and Podman + Datum](../assets/datumctl-docker-podman/00-docker-podman-plus-datum.svg)
@@ -31,7 +31,7 @@ datumctl compute deploy whoami --image=docker.io/traefik/whoami \
 *Terminal run: the same whoami image under `docker run` and `datumctl compute deploy`. On Datum it answers on an HTTPS URL, from an IPv6 address.*
 
 - Pass `--runtime-class=general-purpose` for a stock image. The default is `unikernel`.
-  [Why](../gists/compute/datumctl-compute-reference.md#5-runtime-classes)
+  [Why](../gists/compute/datumctl-docker-podman-reference.md#5-runtime-classes)
 - The app listens on `::`. Instances are IPv6 only.
   [IPv6 crash course](https://www.datum.net/blog/ipv6-crash-course)
 
@@ -53,7 +53,7 @@ datumctl compute deploy whoami --image=docker.io/traefik/whoami \
 
 *Terminal run: `ps`, `logs` and `exec` on both. The container reports the host's kernel. The Instance reports its own.*
 
-[Every verb and flag](../gists/compute/datumctl-compute-reference.md#2-command-map)
+[Every verb and flag](../gists/compute/datumctl-docker-podman-reference.md#2-command-map)
 
 ## Same defaults, almost
 
@@ -63,7 +63,7 @@ podman run --cap-drop SYS_CHROOT --security-opt no-new-privileges IMAGE
 
 *Podman's default capabilities, minus `SYS_CHROOT`, with no-new-privileges: the same set as a `general-purpose` Instance.*
 
-[Measured sets](../gists/compute/datumctl-compute-reference.md#14-local-preflight-with-podman)
+[Measured sets](../gists/compute/datumctl-docker-podman-reference.md#14-local-preflight-with-podman)
 
 ## Same command, more places
 
@@ -81,7 +81,7 @@ datumctl compute deploy api --image=docker.io/traefik/whoami --city=DFW,IAD,SJC 
 *Terminal run: three cities, 8 seconds, one URL.*
 
 Compute runs in `us-central-1` (DFW), `us-east-1` (IAD) and `us-west-1` (SJC).
-[Placement](../gists/compute/datumctl-compute-reference.md#43-many-places-from-one-command)
+[Placement](../gists/compute/datumctl-docker-podman-reference.md#43-many-places-from-one-command)
 
 ## Same Dockerfile
 
@@ -97,7 +97,7 @@ $ datumctl compute build --analyze .
 ```
 
 `--fix` and `deploy --build` edit your Dockerfile in place.
-[Build details](../gists/compute/datumctl-compute-reference.md#9-build)
+[Build details](../gists/compute/datumctl-docker-podman-reference.md#9-build)
 
 ## Same(-ish) IPv6 networks
 
@@ -136,7 +136,7 @@ spec:
   placements: …
 ```
 
-[Networks, DNS and egress](../gists/compute/datumctl-compute-reference.md#11-networks-dns-and-egress) ·
+[Networks, DNS and egress](../gists/compute/datumctl-docker-podman-reference.md#11-networks-dns-and-egress) ·
 [IPv6 crash course](https://www.datum.net/blog/ipv6-crash-course)
 
 ## Same(-ish) YAML shape
@@ -164,7 +164,7 @@ spec:
 ```
 
 Workload files will look familiar to consumers of Compose and Kubeconfig files.
-[Full manifest](../gists/compute/datumctl-compute-reference.md#12-manifests)
+[Full manifest](../gists/compute/datumctl-docker-podman-reference.md#12-manifests)
 
 ## Run datumctl itself in a container
 
