@@ -99,7 +99,7 @@ $ datumctl compute build --analyze .
 `--fix` and `deploy --build` edit your Dockerfile in place.
 [Build details](../gists/compute/datumctl-compute-reference.md#9-build)
 
-## Same networks, IPv6 inside
+## Same(-ish) IPv6 networks
 
 ![Docker resolves container names inside one bridge network on one host. Datum resolves Instance names across a network that spans locations, keeps networks isolated, and reaches IPv6 internet directly and IPv4 services by name through NAT64](../assets/datumctl-docker-podman/04-networks.png)
 

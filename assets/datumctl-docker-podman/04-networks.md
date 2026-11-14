@@ -1,4 +1,4 @@
-# Same networks, IPv6 inside
+# Same(-ish) IPv6 networks
 
 Mermaid version of [04-networks.png](04-networks.png).
 
