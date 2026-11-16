@@ -49,6 +49,10 @@ datumctl compute deploy whoami --image=docker.io/traefik/whoami \
 | `docker context use` | `datumctl ctx` |
 | `-e`, `--env-file`, `-v` | `--env`, `--env-from-secret`, `--secret` |
 
+No `docker stop` or `docker start`. An Instance runs until you `destroy` it, and `--min` can't go below 1, so there is no scale to zero.
+`compute restart` is a rolling restart, one Instance at a time per location.
+[Operate](../gists/compute/datumctl-docker-podman-reference.md#13-operate-logs-exec-scale-restart-destroy)
+
 ![Terminal run: docker ps next to datumctl compute workloads, docker logs next to compute logs, and docker exec next to compute exec showing a different kernel and capability set](../assets/datumctl-docker-podman/11-run-same-verbs.gif)
 
 *Terminal run: `ps`, `logs` and `exec` on both. The container reports the host's kernel. The Instance reports its own.*
@@ -163,7 +167,7 @@ spec:
       scaleSettings: {minReplicas: 1}
 ```
 
-Workload files will look familiar to consumers of Compose and Kubeconfig files.
+Workload files will look familiar to consumers of Compose files and Kubernetes manifests.
 [Full manifest](../gists/compute/datumctl-docker-podman-reference.md#12-manifests)
 
 ## Run datumctl itself in a container
