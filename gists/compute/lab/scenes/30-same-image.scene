@@ -1,0 +1,10 @@
+# Docker / Podman: the image publishes a host port
+$ podman run -d -p 8080:80 docker.io/traefik/whoami:v1.10.3 >/dev/null
+$ curl -s localhost:8080 | grep Hostname
+# Datum: the same image publishes an HTTPS URL
+$ datumctl compute deploy dcs3-whoami \
+    --image=docker.io/traefik/whoami:v1.10.3 \
+    --http-port=80 --location=us-east-1 \
+    --runtime-class=general-purpose --yes | grep -E 'Rollout|https'
+~ until curl -sf -o /dev/null $URL; do sleep 1; done
+$ curl -s $URL | grep -E 'Hostname|IP: fd'

@@ -5,13 +5,13 @@ date: Draft, Nov 2026
 reference file: https://github.com/datum-labs/shorts/blob/main/gists/k8s/istio-compute-bridge-reference.md
 ---
 
-![Istio + Datum](assets/00-istio-plus-datum.svg)
+![Istio + Datum](../assets/istio-datum-compute/00-istio-plus-datum.svg)
 
 *Datum Compute · Istio 1.31.3 · captured 9–10 Nov 2026 · NLB run 10 Nov*
 
 4 ways to bridge Istio service meshes into Datum
 
-![Overview diagram with four lanes, one per way of connecting an Istio mesh to Datum Compute](assets/24-four-ways-overview.png)
+![Overview diagram with four lanes, one per way of connecting an Istio mesh to Datum Compute](../assets/istio-datum-compute/24-istio-four-ways-overview.png)
 
 *Lime marks where the mesh's mTLS ends, pink the stock apps with no Istio inside.*
 
@@ -22,11 +22,11 @@ An Istio agent runs in every app Instance. A tunnel Envoy in the cluster sends H
 
 **Fits:** apps you build.
 
-![Diagram of way 1, sidecar with CONNECT](assets/21-way2-sidecar-connect.png)
+![Diagram of way 1, sidecar with CONNECT](../assets/istio-datum-compute/21-istio-way2-sidecar-connect.png)
 
 *A pod in the cluster calls the app. Its sidecar sends mTLS to a tunnel Envoy, which carries it through the ALB inside an HTTP `CONNECT`. The Istio agent in the Compute Instance ends the mTLS and hands plain HTTP to the app on loopback.*
 
-![Terminal run, 33 s: Instances auto-register as WorkloadEntries, calls spread over both, the Instance sees sleep to datum-app over mutual TLS](assets/02-way2-sidecar.gif)
+![Terminal run, 33 s: Instances auto-register as WorkloadEntries, calls spread over both, the Instance sees sleep to datum-app over mutual TLS](../assets/istio-datum-compute/02-istio-way2-sidecar.gif)
 
 *Terminal run, 33 s: Instances auto-register as WorkloadEntries, calls spread over both, the Instance sees `sleep → datum-app` over `mutual_tls`.*
 
@@ -38,7 +38,7 @@ address is the only thing the cluster needs. There is no relay, no tunnel Envoy 
 
 **Fits:** apps you build, once the NLB is out of early access. It is IPv6 only and has no failover between locations.
 
-![Diagram of way 2: mesh sidecar to an NLB that passes TLS through to the Istio agent in a Compute Instance](assets/25-way5-nlb.png)
+![Diagram of way 2: mesh sidecar to an NLB that passes TLS through to the Istio agent in a Compute Instance](../assets/istio-datum-compute/25-istio-way5-nlb.png)
 
 *The sidecar's mTLS goes to the NLB's public IPv6 address and passes through it untouched. The Istio agent in the Compute Instance ends it and hands plain HTTP to the app.*
 
@@ -54,11 +54,11 @@ behind it on the gVPC. mTLS ends at the sidecar and the last hop is plain HTTP.
 
 **Fits:** apps you just run, small and static. The router config is a static file, so a change means a restart.
 
-![Diagram of way 3, shared sidecar, including the reverse path and Host header requirement](assets/22-way3-shared-sidecar.png)
+![Diagram of way 3, shared sidecar, including the reverse path and Host header requirement](../assets/istio-datum-compute/22-istio-way3-shared-sidecar.png)
 
 *Calls arrive through the ALB at the shared sidecar, and its own Envoy router picks app1 or app2 by `Host` header and sends plain HTTP over the gVPC. In the other direction, a Datum app calls the shared sidecar on :5000 and has to send a `Host` header.*
 
-![Terminal run, 40 s: stock whoami apps, RemoteAddr is the shared sidecar, and the reverse path works only with the Host header](assets/03-way3-shared-sidecar.gif)
+![Terminal run, 40 s: stock whoami apps, RemoteAddr is the shared sidecar, and the reverse path works only with the Host header](../assets/istio-datum-compute/03-istio-way3-shared-sidecar.gif)
 
 *Terminal run, 40 s: stock whoami apps, `RemoteAddr` is the shared sidecar, and the reverse path works only with the Host header.*
 
@@ -70,11 +70,11 @@ and `AuthorizationPolicy`. The app sees the caller's identity in `X-Forwarded-Cl
 **Fits:** apps you just run, at scale. A gateway on a VM `WorkloadEntry` isn't a documented Istio path, and it worked first
 try.
 
-![Diagram of way 4, Istio gateway on Datum, showing istiod, XFCC to the app, 403 for app2 and the reverse path](assets/23-way4-istio-gateway.png)
+![Diagram of way 4, Istio gateway on Datum, showing istiod, XFCC to the app, 403 for app2 and the reverse path](../assets/istio-datum-compute/23-way4-istio-gateway.png)
 
 *istiod programs the gateway Instance from `Gateway`, `VirtualService`, `ServiceEntry` and `AuthorizationPolicy` objects. The mTLS ends at the gateway, which passes plain HTTP to the app with the caller's identity in a header: app1 is allowed and app2 gets a 403. In the other direction, a Datum app calls the gateway on :5000 and reaches `helloworld`, with no `Host` header needed.*
 
-![Terminal run, 36 s: istiod objects, the app sees the caller SPIFFE URI, app1-b returns 200, app2-b returns 403, reverse path needs no header](assets/04-way4-istio-gateway.gif)
+![Terminal run, 36 s: istiod objects, the app sees the caller SPIFFE URI, app1-b returns 200, app2-b returns 403, reverse path needs no header](../assets/istio-datum-compute/04-way4-istio-gateway.gif)
 
 *Terminal run, 36 s: istiod objects, the app sees `URI=spiffe://…/sleep`, app1-b returns 200, app2-b returns 403, and the reverse
 path needs no header.*
@@ -96,4 +96,4 @@ path needs no header.*
 
 ## Reference Lab Architecture
 
-![Reference lab architecture: the Datum gVPC with the Istio gateway, ALB, app1, app2 and app-client; the GKE cluster1 with its east-west gateway, istiod, helloworld v1, traffic pods, tunnel Envoy and Prometheus with Kiali; and the k3s cluster2 on a GCE VM with helloworld v2](assets/26-gke-lab-helloworld.png)
+![Reference lab architecture: the Datum gVPC with the Istio gateway, ALB, app1, app2 and app-client; the GKE cluster1 with its east-west gateway, istiod, helloworld v1, traffic pods, tunnel Envoy and Prometheus with Kiali; and the k3s cluster2 on a GCE VM with helloworld v2](../assets/istio-datum-compute/26-istio-gke-lab-helloworld.png)
