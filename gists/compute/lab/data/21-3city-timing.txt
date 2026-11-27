@@ -1,0 +1,18 @@
+deploy_wall_s=11.688 url=https://volcano-cream-52bcs.datumproxy.net
+attempt=1 t=11.889 http=000
+attempt=2 t=12.434 http=000
+attempt=3 t=13.336 http=000
+attempt=4 t=13.911 http=000
+attempt=5 t=14.478 http=000
+attempt=6 t=15.333 http=000
+attempt=7 t=16.160 http=000
+attempt=8 t=16.711 http=000
+attempt=9 t=17.308 http=000
+attempt=10 t=18.027 http=000
+attempt=11 t=18.887 http=000
+attempt=12 t=19.439 http=000
+attempt=13 t=19.979 http=000
+attempt=14 t=20.729 http=000
+attempt=15 t=21.424 http=000
+attempt=16 t=22.364 http=200
+access-log attempt 1 GET lines=43

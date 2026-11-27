@@ -1,0 +1,26 @@
+Resolving workload "dcs2-api" in project project-t96fh...
+  Placement "default": selector=[topology.datum.net/city-code in (DFW,IAD,SJC)], min=1
+  Runtime class:       general-purpose
+  Network:             default
+  HTTP service:        port 80 → Datum-managed URL
+                       Datum terminates TLS; serve plain HTTP on this port.
+  workload/dcs2-api created
+Saved workload.yaml
+Waiting for rollout. Ctrl-C to detach (rollout continues in background).
+
+
+  PLACEMENT	LOCATION	UPDATED	READY	OLD	PHASE
+  default   us-central-1   0   0   1   Pending
+  default   us-east-1   0   0   1   Pending
+  default   us-west-1   0   0   1   Pending
+  default   us-central-1   1   1   0   Done
+  default   us-east-1   1   1   0   Done
+  default   us-west-1   1   1   0   Done
+Rollout complete in 6s.
+
+Publishing...
+  Backends     3 healthy across us-central-1, us-east-1, us-west-1
+  Edge         programmed
+  Certificate  issued
+
+  https://volcano-cream-52bcs.datumproxy.net

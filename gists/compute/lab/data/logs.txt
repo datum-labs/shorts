@@ -1,0 +1,3 @@
+[default-us-east-1-0/app] Nov 25 18:39:58.511  2026/11/25 18:39:57 Starting up on port 80
+[default-us-central-1-0/app] Nov 25 18:39:58.555  2026/11/25 18:39:58 Starting up on port 80
+[default-us-west-1-0/app]    Nov 25 18:39:59.740  2026/11/25 18:39:59 Starting up on port 80

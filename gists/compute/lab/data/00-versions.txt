@@ -1,0 +1,17 @@
+== datumctl version
+Client Version: v0.23.3
+Kustomize Version: v5.7.1
+Server Version: v1.37.1-milo.0.40.0+b156fa81fa5b0a7645a8eef318e6e76462e6f6ee
+== plugins
+NAME        INDEX      VERSION             TRUST         DESCRIPTION                                                           STATUS
+compute     datum      v0.12.11            official      Deploy and manage containerized workloads on Datum Cloud              update
+== podman
+podman version 5.8.9
+== project
+Project:  project-t96fh
+Status:   Active (enabled 56d ago)
+== locations (datumctl get locations)
+NAME           CLASS           CITY   AGE     READY   REASON
+us-central-1   datum-managed   DFW    56d     True    Ready
+us-east-1      datum-managed   IAD    56d     True    Ready
+us-west-1      datum-managed   SJC    56d     True    Ready

@@ -1,0 +1,96 @@
+Build preview
+  Context:    /work
+  Dockerfile: Dockerfile
+  Output:     preview only
+
+Building Dockerfile ...
+Building with BuildKit at tcp://127.0.0.1:1234
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 269B done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-alpine
+#2 DONE 1.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.1s
+
+#4 [internal] load build context
+#4 transferring context: 127B done
+#4 DONE 0.2s
+
+#5 [1/3] FROM docker.io/library/python:3.12-alpine@sha256:c5ba3deef00c7758561a0f03c26f44f10589263d40e732b8748e0d1f38f6dd89
+#5 resolve docker.io/library/python:3.12-alpine@sha256:c5ba3deef00c7758561a0f03c26f44f10589263d40e732b8748e0d1f38f6dd89 0.1s done
+#5 DONE 0.3s
+
+#5 [1/3] FROM docker.io/library/python:3.12-alpine@sha256:c5ba3deef00c7758561a0f03c26f44f10589263d40e732b8748e0d1f38f6dd89
+#5 sha256:cc36311dc778ba4d60f5286dc5de96f657c8f9ac4a0bd62ce0f9606aae0d4418 248B / 248B 0.1s done
+#5 sha256:113b91713f05dfc8999a7dd895088c7afb068e656eb1c802fab15c92d3e5c4e1 0B / 13.78MB 0.2s
+#5 sha256:aa121b1b1cdb977b7ae6ba67331cfbf474c3d8060e5d90c833a9abdf86370a60 0B / 411.99kB 0.2s
+#5 sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17 0B / 3.85MB 0.2s
+#5 sha256:113b91713f05dfc8999a7dd895088c7afb068e656eb1c802fab15c92d3e5c4e1 9.44MB / 13.78MB 0.3s
+#5 sha256:aa121b1b1cdb977b7ae6ba67331cfbf474c3d8060e5d90c833a9abdf86370a60 411.99kB / 411.99kB 0.3s done
+#5 sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17 3.85MB / 3.85MB 0.4s done
+#5 sha256:113b91713f05dfc8999a7dd895088c7afb068e656eb1c802fab15c92d3e5c4e1 13.78MB / 13.78MB 0.5s done
+#5 extracting sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17
+#5 extracting sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17 0.2s done
+#5 DONE 1.0s
+
+#5 [1/3] FROM docker.io/library/python:3.12-alpine@sha256:c5ba3deef00c7758561a0f03c26f44f10589263d40e732b8748e0d1f38f6dd89
+#5 extracting sha256:aa121b1b1cdb977b7ae6ba67331cfbf474c3d8060e5d90c833a9abdf86370a60
+#5 extracting sha256:aa121b1b1cdb977b7ae6ba67331cfbf474c3d8060e5d90c833a9abdf86370a60 0.4s done
+#5 DONE 1.3s
+
+#5 [1/3] FROM docker.io/library/python:3.12-alpine@sha256:c5ba3deef00c7758561a0f03c26f44f10589263d40e732b8748e0d1f38f6dd89
+#5 extracting sha256:113b91713f05dfc8999a7dd895088c7afb068e656eb1c802fab15c92d3e5c4e1
+#5 extracting sha256:113b91713f05dfc8999a7dd895088c7afb068e656eb1c802fab15c92d3e5c4e1 0.8s done
+#5 extracting sha256:cc36311dc778ba4d60f5286dc5de96f657c8f9ac4a0bd62ce0f9606aae0d4418
+#5 extracting sha256:cc36311dc778ba4d60f5286dc5de96f657c8f9ac4a0bd62ce0f9606aae0d4418 0.4s done
+#5 DONE 2.5s
+
+#6 [2/3] WORKDIR /srv
+#6 DONE 0.3s
+
+#7 [3/3] COPY index.html /srv/index.html
+#7 DONE 0.4s
+
+#8 exporting to client tarball
+#8 sending tarball
+#8 sending tarball 1.2s done
+#8 DONE 1.2s
+
+#9 exporting to oci image format
+#9 exporting layers 1.3s done
+#9 exporting manifest sha256:f157f6c850172ee33e5242848b2864e7e4f91c4fc87b8851a31cacaad529883a 0.0s done
+#9 exporting config sha256:d4b5561d9ca8d84a8dc0b774d68c687ea0a20c6b09837efe56fbbd121f38765c 0.0s done
+#9 sending tarball 0.1s done
+#9 DONE 1.5s
+Analyzing image filesystem ...
+  finding entrypoint /usr/local/bin/python3
+  detecting entrypoint type
+  tracing startup script
+  reading Dockerfile hints
+  checking compatibility
+  running startup shell check
+  running startup script check
+  running architecture check
+  running runtime libraries check
+  running NSS modules check
+  running entrypoint permissions check
+Analyzing image filesystem done in 0s
+Analyzing /usr/local/bin/python3  (native binary)
+
+note: wrapping the startup command to cd into /srv first (your WORKDIR)
+
+✓ No compatibility issues found
+Packaging root filesystem ...
+Packaging root filesystem done in 1s
+Assembling Compute image ...
+Assembling Compute image done in 0s
+Preview complete. The image wasn't saved: add --output ./work.tar to save it,
+or --output <registry>/<account>/work:latest to push it.
+
+real	0m9.284s
+user	0m0.094s
+sys	0m0.086s
