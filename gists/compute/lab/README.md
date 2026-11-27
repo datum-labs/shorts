@@ -13,6 +13,6 @@ Prerequisites: Podman, a logged-in `datumctl` (`datumctl compute access` says Ac
 
 `scenes/*.scene` use `$` for a typed command, `#` for a typed comment, ` \` to continue a line, `$URL` for the last `*.datumproxy.net` URL printed, and `~` for a silent setup line. `env.sh` is sourced by `castrec.py`. Scene 31 runs `dcs3-web` and scene 30 `dcs3-whoami`.
 
-`data/` is real run 1 of `datumctl compute deploy api --city=DFW,IAD,SJC`. The animation shows the workload as `api`; it was named `dcs2-api`. Three terminal lines of the animation (`created`, `Rollout complete`, `Backends`/`Edge`) have estimated on-screen times; the rest follows the recorded timestamps.
+`data/` is real run 1 of `datumctl compute deploy api --city=DFW,IAD,SJC`. The animation shows the equivalent `--location=us-central-1,us-east-1,us-west-1` command (checked separately, same three Instances) and the workload as `api`; it was named `dcs2-api`. Three terminal lines of the animation (`created`, `Rollout complete`, `Backends`/`Edge`) have estimated on-screen times; the rest follows the recorded timestamps.
 
 Teardown: `datumctl compute destroy NAME --yes` for each workload, then `datumctl compute workloads | grep PREFIX` must print nothing.

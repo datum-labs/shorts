@@ -179,10 +179,10 @@ Not offered: `--platform`, `--restart`, `--health-cmd`, `--init`, `--user`, `--r
 ### 4.3 Many places from one command
 
 ```bash
-datumctl compute deploy api --image=docker.io/traefik/whoami:v1.10.3 --city=DFW,IAD,SJC --http-port=80 --runtime-class=general-purpose --yes
+datumctl compute deploy api --image=docker.io/traefik/whoami:v1.10.3 --location=us-central-1,us-east-1,us-west-1 --http-port=80 --runtime-class=general-purpose --yes
 ```
 
-One Workload, one placement `default`, one Instance per location, one URL. Rollout 6–8 s for all three, three runs [V] (§16.18, §16.21).
+One Workload, one placement `default`, one Instance per location, one URL. `--city=DFW,IAD,SJC` selects the same three locations [V]. Rollout 6–8 s for all three, three runs [V] (§16.18, §16.21).
 
 - Compute locations: `us-central-1` (Dallas), `us-east-1` (Ashburn), `us-west-1` (San Jose) [D][V].
 - `--city=DFW,IAD,AMS` deployed to DFW and IAD only, with no warning [V]. `--location=nl-west-1` is refused:
@@ -881,7 +881,7 @@ Same app in all three: `traefik/whoami:v1.10.3`, unchanged for Podman and genera
 
 ### 16.21 Three cities end to end (2026-11-25)
 
-Same image, `datumctl compute deploy api --image=docker.io/traefik/whoami:v1.10.3 --city=DFW,IAD,SJC --http-port=80 --runtime-class=general-purpose --yes`, compute plugin v0.12.11, Podman 5.8.9 as the local baseline. Two runs, one client (Southern California). Rerun files: [`lab/`](lab/README.md).
+Same image, `datumctl compute deploy api --image=docker.io/traefik/whoami:v1.10.3 --city=DFW,IAD,SJC --http-port=80 --runtime-class=general-purpose --yes`, compute plugin v0.12.11, Podman 5.8.9 as the local baseline. Two runs, one client (Southern California). The two timed runs used `--city=DFW,IAD,SJC`; a later run of the `--location=us-central-1,us-east-1,us-west-1` form (the one the short shows) created the same three Instances: `Rollout complete in 14s`, `3 healthy across us-central-1, us-east-1, us-west-1`, 3 Available, then destroyed. It was not timed to first 200. Rerun files: [`lab/`](lab/README.md).
 
 | Run | `Rollout complete` | Deploy command wall | All 3 Instances Available (poll) | First 200 from the URL, from deploy start |
 |---|---|---|---|---|
@@ -890,7 +890,7 @@ Same image, `datumctl compute deploy api --image=docker.io/traefik/whoami:v1.10.
 
 - Instances became Available in the order IAD, DFW, SJC in both runs. The polling (six staggered `compute instances` calls, ±1-3 s per sample) also slowed the deploy command. A single-location deploy took 7.3 s wall.
 - After `Certificate issued` the public URL answered after a variable wait. Run 1 and 2 needed 15 and 16 curl attempts. A single-location deploy sometimes answered at once and once after about 30 s. Cause not diagnosed.
-- All 40 requests per run were answered by the SJC Instance, the nearest city to the client: min/mean/max 51/56.7/75 ms (run 1) and 52/66.5/277 ms (run 2), curl `time_total`, TLS included. Requests from one client do not show spreading across cities.
+- All 40 requests per run were answered by the SJC (us-west-1) Instance, the nearest region to the client: min/mean/max 51/56.7/75 ms (run 1) and 52/66.5/277 ms (run 2), curl `time_total`, TLS included. Requests from one client do not show spreading across cities.
 - `whoami` logs only its startup line per Instance. The 40 requests appear in `compute logs --alb`, without an Instance prefix.
 - Kernel, from `exec`: host 7.3.4 (Podman), Instance 6.18.35.
 - `compute build --analyze` needed a BuildKit that rootless Podman cannot start. A privileged `moby/buildkit:v0.17.3` container with `--oci-worker-snapshotter=native` worked: `No compatibility issues found`, 9.3 s wall. Output: [`lab/data/30-build-analyze.txt`](lab/data/30-build-analyze.txt).

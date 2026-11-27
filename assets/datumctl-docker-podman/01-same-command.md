@@ -7,14 +7,14 @@ Mermaid version of [01-same-command.png](01-same-command.png).
 config:
   theme: base
   flowchart:
-    wrappingWidth: 420
-    padding: 14
+    wrappingWidth: 300
+    padding: 10
     subGraphTitleMargin:
       top: 8
       bottom: 14
   themeVariables:
     fontFamily: "DejaVu Sans, Verdana, sans-serif"
-    fontSize: "22px"
+    fontSize: "16px"
     primaryColor: "#F6F5F1"
     primaryTextColor: "#0C1D31"
     primaryBorderColor: "#0C1D31"
@@ -37,7 +37,7 @@ flowchart TB
     direction LR
     tc["datumctl<br/>compute deploy"]:::cream
     tu["an HTTPS URL"]
-    ti["Instance in a<br/>Datum location"]
+    ti["Instance in a<br/>Datum region"]
     tc --> tu --> ti
   end
   DK ~~~ DT

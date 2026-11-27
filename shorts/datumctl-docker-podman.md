@@ -1,5 +1,5 @@
 ---
-title: Same docker run, three cities
+title: Same docker run, three regions
 author: Daniel Lotterman
 date: Draft, Nov 2026
 reference file: https://github.com/datum-labs/shorts/blob/main/gists/compute/datumctl-docker-podman-reference.md
@@ -22,7 +22,7 @@ datumctl compute deploy whoami --image=docker.io/traefik/whoami \
   --http-port=80 --location=us-east-1 --runtime-class=general-purpose
 ```
 
-![The same image and port: docker run publishes a host port on your host, datumctl compute deploy publishes an HTTPS URL that reaches an Instance in a Datum location](../assets/datumctl-docker-podman/01-same-command.png)
+![The same image and port: docker run publishes a host port on your host, datumctl compute deploy publishes an HTTPS URL that reaches an Instance in a Datum region](../assets/datumctl-docker-podman/01-same-command.png)
 
 *Same image, same port. A URL replaces the host port. One extra flag, because the default runtime class is `unikernel`: [why](../gists/compute/datumctl-docker-podman-reference.md#5-runtime-classes).*
 
@@ -53,22 +53,22 @@ No `docker stop` or `docker start`. An Instance runs until you `destroy` it, and
 
 [Every verb and flag](../gists/compute/datumctl-docker-podman-reference.md#2-command-map)
 
-## Same image, three cities
+## Same image, three regions
 
 ```bash
-datumctl compute deploy api --image=docker.io/traefik/whoami --city=DFW,IAD,SJC \
+datumctl compute deploy api --image=docker.io/traefik/whoami --location=us-central-1,us-east-1,us-west-1 \
   --http-port=80 --runtime-class=general-purpose
 ```
 
-![One deploy command creates one Workload with an Instance in each of Dallas, Ashburn and San Jose, behind one HTTPS URL](../assets/datumctl-docker-podman/02-many-places.png)
+![One deploy command creates one Workload with an Instance in each of us-central-1, us-east-1 and us-west-1, behind one HTTPS URL](../assets/datumctl-docker-podman/02-many-places.png)
 
-*One command, one Workload, one Instance in each city, one URL.*
+*One command, one Workload, one Instance in each region, one URL.*
 
-![One deploy, three panels: the Instances in Dallas, Ashburn and San Jose turn Available, instance and access logs stream in, and the command and its output run below](../assets/datumctl-docker-podman/12-run-more-places.gif)
+![One deploy, three panels: the Instances in us-central-1, us-east-1 and us-west-1 turn Available, instance and access logs stream in, and the command and its output run below](../assets/datumctl-docker-podman/12-run-more-places.gif)
 
-*Captured run: three cities, one URL. The rollout reported 6 s. The first 200 from the URL came at about 22 s. Every request was answered by San Jose, the city nearest the client.*
+*Captured run: three regions, one URL. The rollout reported 6 s. The first 200 from the URL came at about 22 s. Every request was answered by us-west-1, the region nearest the client.*
 
-Compute runs in `us-central-1` (DFW), `us-east-1` (IAD) and `us-west-1` (SJC).
+Compute runs in `us-central-1`, `us-east-1` and `us-west-1`.
 [Placement](../gists/compute/datumctl-docker-podman-reference.md#43-many-places-from-one-command)
 
 ## Same Dockerfile
@@ -90,9 +90,9 @@ $ datumctl compute build --analyze .
 
 ## Same(-ish) YAML
 
-![Docker resolves container names inside one bridge network on one host. Datum resolves Instance names inside one network that spans locations, and keeps a second network isolated](../assets/datumctl-docker-podman/04-networks.png)
+![Docker resolves container names inside one bridge network on one host. Datum resolves Instance names inside one network that spans regions, and keeps a second network isolated](../assets/datumctl-docker-podman/04-networks.png)
 
-*Names resolve inside a network, networks stay apart, and on Datum a network spans cities.*
+*Names resolve inside a network, networks stay apart, and on Datum a network spans regions.*
 
 ```yaml
 # compose.yaml

@@ -1,4 +1,4 @@
-# Same command, more places
+# Same image, three regions
 
 Mermaid version of [02-many-places.png](02-many-places.png).
 
@@ -7,14 +7,14 @@ Mermaid version of [02-many-places.png](02-many-places.png).
 config:
   theme: base
   flowchart:
-    wrappingWidth: 420
-    padding: 14
+    wrappingWidth: 300
+    padding: 10
     subGraphTitleMargin:
       top: 8
       bottom: 14
   themeVariables:
     fontFamily: "DejaVu Sans, Verdana, sans-serif"
-    fontSize: "22px"
+    fontSize: "16px"
     primaryColor: "#F6F5F1"
     primaryTextColor: "#0C1D31"
     primaryBorderColor: "#0C1D31"
@@ -25,14 +25,14 @@ config:
     edgeLabelBackground: "#F6F5F1"
     mainBkg: "#F6F5F1"
 ---
-flowchart TB
-  cmd["one command<br/>datumctl compute deploy"]:::cream
-  wl["one Workload"]:::cream
+flowchart LR
+  cmd["datumctl<br/>compute deploy"]:::cream
+  wl["one<br/>Workload"]:::cream
   subgraph R[" "]
-    direction LR
-    i1["Dallas"]
-    i2["Ashburn"]
-    i3["San Jose"]
+    direction TB
+    i1["us-central-1"]
+    i2["us-east-1"]
+    i3["us-west-1"]
   end
   url["one HTTPS URL"]
   cmd --> wl
@@ -53,4 +53,4 @@ flowchart TB
   classDef iwhite fill:#FFFFFF,stroke:#0C1D31,color:#0C1D31
 ```
 
-*One command, one Workload, one Instance in each city, one URL.*
+*One command, one Workload, one Instance in each region, one URL.*

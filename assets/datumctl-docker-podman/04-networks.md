@@ -7,14 +7,14 @@ Mermaid version of [04-networks.png](04-networks.png).
 config:
   theme: base
   flowchart:
-    wrappingWidth: 420
-    padding: 14
+    wrappingWidth: 300
+    padding: 10
     subGraphTitleMargin:
       top: 8
       bottom: 14
   themeVariables:
     fontFamily: "DejaVu Sans, Verdana, sans-serif"
-    fontSize: "22px"
+    fontSize: "16px"
     primaryColor: "#F6F5F1"
     primaryTextColor: "#0C1D31"
     primaryBorderColor: "#0C1D31"
@@ -39,12 +39,12 @@ flowchart TB
     end
     N1 -.-x|"isolated"| N2
   end
-  subgraph DT["Datum: many cities"]
+  subgraph DT["Datum: many regions"]
     direction LR
     subgraph M1["one network"]
       direction LR
-      i1["web<br/>Ashburn"]
-      i2["api<br/>Dallas"]
+      i1["web<br/>us-east-1"]
+      i2["api<br/>us-central-1"]
       i1 -->|"name"| i2
     end
     subgraph M2["second"]
@@ -52,10 +52,8 @@ flowchart TB
     end
     M1 -.-x|"isolated"| M2
   end
-  net["Internet"]
   DK ~~~ DT
-  DT ---|"IPv6 direct"| net
-  class c1,c2,c3,net iwhite
+  class c1,c2,c3 iwhite
   class i1,i2,i3 ilime
   classDef navy fill:#0C1D31,stroke:#0C1D31,color:#F6F5F1
   classDef pink fill:#EBCFD2,stroke:#B5605E,color:#0C1D31
@@ -69,4 +67,4 @@ flowchart TB
   classDef iwhite fill:#FFFFFF,stroke:#0C1D31,color:#0C1D31
 ```
 
-*Names resolve inside a network, and networks stay isolated. Datum's networks span cities. IPv4-only services are reachable by name, through DNS64 and NAT64.*
+*Names resolve inside a network, and networks stay isolated. Datum's networks span regions. IPv4-only services are reachable by name, through DNS64 and NAT64.*

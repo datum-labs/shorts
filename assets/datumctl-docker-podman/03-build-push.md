@@ -7,14 +7,14 @@ Mermaid version of [03-build-push.png](03-build-push.png).
 config:
   theme: base
   flowchart:
-    wrappingWidth: 420
-    padding: 14
+    wrappingWidth: 300
+    padding: 10
     subGraphTitleMargin:
       top: 8
       bottom: 14
   themeVariables:
     fontFamily: "DejaVu Sans, Verdana, sans-serif"
-    fontSize: "22px"
+    fontSize: "16px"
     primaryColor: "#F6F5F1"
     primaryTextColor: "#0C1D31"
     primaryBorderColor: "#0C1D31"

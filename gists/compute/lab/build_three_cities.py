@@ -32,12 +32,12 @@ GREY, GREY_F = "#8A8E99", "#E4E4E1"
 AMBER, AMBER_S = "#F6DFA6", "#B3862A"
 PANEL, PANEL_S = "#FFFFFF", "#D6D5CE"
 MUTED = "#5A6372"
-CITY = {"us-central-1": "DFW", "us-east-1": "IAD", "us-west-1": "SJC"}
-CITY_NAME = {"us-central-1": "Dallas", "us-east-1": "Ashburn", "us-west-1": "San Jose"}
+CITY = {"us-central-1": "us-central-1", "us-east-1": "us-east-1", "us-west-1": "us-west-1"}
+CITY_NAME = {"us-central-1": "us-central-1", "us-east-1": "us-east-1", "us-west-1": "us-west-1"}
 ORDER = ["us-central-1", "us-east-1", "us-west-1"]
 
 COMMAND = ("datumctl compute deploy api --image=docker.io/traefik/whoami:v1.10.3 "
-           "--city=DFW,IAD,SJC --http-port=80 --runtime-class=general-purpose --yes")
+           "--location=us-central-1,us-east-1,us-west-1 --http-port=80 --runtime-class=general-purpose --yes")
 URL_GENERIC = "https://api-xxxxx.datumproxy.net"   # real host deliberately not shown
 
 # ---------- load data ----------
@@ -112,8 +112,7 @@ def to_anim(r):
 # Rollout line and the URL line have anchors (deploy wall = 11.688); others are approximate.
 OUTPUT = [(0.3, "workload/api created", NAVY),
           (7.5, rollout + ".", LIME),
-          (11.4, "Backends  3 healthy across us-central-1, us-east-1, us-west-1", "#C9CED6"),
-          (11.5, "Edge programmed · Certificate issued", "#C9CED6"),
+          (11.4, "Backends 3 healthy · Edge programmed · Cert issued", "#C9CED6"),
           (deploy_wall, URL_GENERIC, LIME)]
 
 # ---------- drawing helpers (2x supersampled) ----------
@@ -242,9 +241,9 @@ def frame(a):
         y = 44 + k * 21
         newest = (k == len(rows) - 1)
         if newest: c.rr((LX0 + 8, y - 2, LX1 - 8, y + 19), 4, fill=LIME)
-        tag, rest = txt.split(" ", 1)
+        tag, rest = txt.split(" ", 1)  # tag = region id
         c.text((LX0 + 14, y), tag, "monob", 14, NAVY if kind != "app" else "#55621B")
-        c.text((LX0 + 14 + 4 * 8.4 + 0.5, y), rest, "mono", 14, NAVY if newest or kind == "probe" else MUTED)
+        c.text((LX0 + 14 + (len(tag) + 1) * 8.4, y), rest, "mono", 14, NAVY if newest or kind == "probe" else MUTED)
         if kind == "probe":
             c.text((LX1 - 14, y), "first 200", "monob", 14, "#55621B", "ra")
     # sparkline
@@ -265,8 +264,9 @@ def frame(a):
     # ================= CODE =================
     c.rr((GX0, CY0, LX1, CY1), 10, fill=NAVY)
     c.text((GX0 + 14, CY0 + 9), "Terminal", "sansb", 14, "#9FA8B5")
-    cmd_lines = ["$ datumctl compute deploy api --image=docker.io/traefik/whoami:v1.10.3 --city=DFW,IAD,SJC",
-                 "    --http-port=80 --runtime-class=general-purpose --yes"]
+    cmd_lines = ["$ datumctl compute deploy api --image=docker.io/traefik/whoami:v1.10.3 \\",
+                 "    --location=us-central-1,us-east-1,us-west-1 --http-port=80 \\",
+                 "    --runtime-class=general-purpose --yes"]
     full = "\n".join(cmd_lines)
     typed = len(full) if a >= T0 - 0.3 else int(len(full) * max(0, a - 0.3) / (T0 - 0.8))
     typed = min(typed, len(full))
@@ -278,7 +278,7 @@ def frame(a):
         k = len(shown_cmd) - 1
         c.rr((GX0 + 14 + 8.4 * len(shown_cmd[k]) + 1, y + k * 21 + 1,
               GX0 + 14 + 8.4 * len(shown_cmd[k]) + 9, y + k * 21 + 19), 1, fill=LIME)
-    oy = y + 2 * 21 + 6
+    oy = y + len(cmd_lines) * 21 + 6
     for (rt, txt, col) in OUTPUT:
         if r >= rt:
             c.text((GX0 + 14, oy), txt, "mono", 14, "#F6F5F1" if col == NAVY else col)
@@ -300,7 +300,7 @@ def frame(a):
     if r >= 0 and r >= 7.5:
         c.text((cx0, CY0 + 140), "rollout reported 6 s", "mono", 14, "#C9CED6")
     if n >= 40:
-        c.text((cx0, CY0 + 160), "40/40 answered by SJC", "monob", 14, LIME)
+        c.text((cx0, CY0 + 160), "40/40 answered by us-west-1", "monob", 14, LIME)
     return c.out()
 
 def main():
